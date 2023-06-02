@@ -72,8 +72,8 @@ class GameState():
 
     # Update castling rights - whenever it is a rook or a king move
     self.updateCastleRights(move)
-    self.castleRightsLog.append[CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks,
-                                              self.currentCastlingRight.wqs, self.currentCastlingRight.bqs)]
+    self.castleRightsLog.append(CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks,
+                                              self.currentCastlingRight.wqs, self.currentCastlingRight.bqs))
     
 
 
@@ -101,7 +101,8 @@ class GameState():
         self.enpassantPossible = ()
       # undo castling rights
       self.castleRightsLog.pop() # get rid of the new castle rights from the move we are undoing
-      self.currentCastlingRight = self.castleRightsLog[-1] # set the current castle rights to the last one in the list
+      newRights = self.castleRightsLog[-1] # set the current castle rights to the last one in the list
+      self.currentCastlingRight = CastleRights(newRights.wks, newRights.bks, newRights.wqs, newRights.bqs) # set the current castle rights to the last one in the list
       # undo castle move
       if move.isCastleMove:
         if move.endCol - move.startCol == 2: # kingside
@@ -110,6 +111,7 @@ class GameState():
         else: # queenside
           self.board[move.endRow][move.endCol-2] = self.board[move.endRow][move.endCol+1] # move the rook back
           self.board[move.endRow][move.endCol+1] = '--' # leave blank space where the rook was
+
 
 
   '''
@@ -144,10 +146,7 @@ class GameState():
                                     self.currentCastlingRight.wqs, self.currentCastlingRight.bqs) # save the current castle rights
     # 1.) generate all possible moves
     moves = self.getAllPossibleMoves()
-    if self.whiteToMove:
-      self.getCastleMoves(self.whiteKingLocation[0], self.whiteKingLocation[1], moves)
-    else:
-      self.getCastleMoves(self.blackKingLocation[0], self.blackKingLocation[1], moves)
+
     # 2,) for each move, make the move
     for i in range(len(moves)-1, -1, -1): # when removing from a list, go backwards in order not to skip
       self.makeMove(moves[i])
@@ -164,6 +163,10 @@ class GameState():
       else:
         self.staleMate = True # set stalemate to true
 
+    if self.whiteToMove:
+      self.getCastleMoves(self.whiteKingLocation[0], self.whiteKingLocation[1], moves)
+    else:
+      self.getCastleMoves(self.blackKingLocation[0], self.blackKingLocation[1], moves)
     self.enpassantPossible = tempEnpassantPossible # set the enpassantPossible back to what it was before
     self.currentCastlingRight = tempCastleRights # set the castle rights back to what they were before
     return moves
