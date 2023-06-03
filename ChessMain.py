@@ -111,10 +111,10 @@ def highlightSquares(screen, game_state, validMoves, sqSelected):
       # highlight selected square
       s = p.Surface((SQUARE_SIZE, SQUARE_SIZE))
       s.set_alpha(100) # transparency value -> 0 transparent; 255 opaque
-      s.fill(p.Color('yellow'))
+      s.fill(p.Color('gold'))
       screen.blit(s, (c*SQUARE_SIZE, r*SQUARE_SIZE))
       # highlight moves from that square
-      s.fill(p.Color('dimgrey'))
+      s.fill(p.Color('lightsteelblue'))
       for move in validMoves:
         if move.startRow == r and move.startCol == c:
           screen.blit(s, (move.endCol*SQUARE_SIZE, move.endRow*SQUARE_SIZE))
