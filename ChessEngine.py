@@ -159,9 +159,9 @@ class GameState():
       self.undoMove()
     if len(moves) == 0: # either checkmate or stalemate
       if self.inCheck(): # if in check
-        self.checkMate = True # set checkmate to true
+        self.checkmate = True # set checkmate to true
       else:
-        self.staleMate = True # set stalemate to true
+        self.stalemate = True # set stalemate to true
 
     if self.whiteToMove:
       self.getCastleMoves(self.whiteKingLocation[0], self.whiteKingLocation[1], moves)
