@@ -68,16 +68,22 @@ def main():
       # key handlers
       elif e.type == p.KEYDOWN:
         if e.key == p.K_z: # undo when z is pressed
-          game_state.undoMove()
-          moveMade = True
-          animate = False
+          game_state.undoMove() # undo last move
+          moveMade = True # set moveMade to true
+          animate = False # set animate to false
+          gameOver = False # set gameOver to false
+          game_state.checkmate = False # set checkmate to false
+          game_state.stalemate = False # set stalemate to false
         if e.key == p.K_c: # reset the game when c is pressed
-          game_state = ChessEngine.GameState()
-          validMoves = game_state.getValidMoves()
-          sqSelected = ()
-          playerClicks = []
-          moveMade = False
-          animate = False
+          game_state = ChessEngine.GameState() # reset the game state
+          validMoves = game_state.getValidMoves() # get valid moves
+          sqSelected = () # reset the selected square
+          playerClicks = [] # reset player clicks
+          moveMade = False # set moveMade to false
+          animate = False # set animate to false
+          gameOver = False # set gameOver to false
+          game_state.checkmate = False # set checkmate to false
+          game_state.stalemate = False # set stalemate to false
 
     if moveMade: # if a move is made, update valid moves
       if animate: 
