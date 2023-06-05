@@ -37,18 +37,21 @@ def main():
   sqSelected = () # no square selected initially, keep track of last click (tuple(row, coloumn))
   playerClicks = [] # keep track of player clicks (two tuples: [(x,y), (x,y)])
   gameOver = False
+  playerOne = True # if a human is playing white, then this will be True, else False
+  playerTwo = False # if a human is playing black, then this will be True, else False
   while running:
+    humanTurn = (game_state.whiteToMove and playerOne) or (not game_state.whiteToMove and playerTwo)
     for e in p.event.get():
       if e.type == p.QUIT:
         running = False
       # mouse handler
       elif e.type == p.MOUSEBUTTONDOWN:
-        if not gameOver: # Only be able to make moves if the game is not over
+        if not gameOver and humanTurn: # if the game is not over and it is a human's turn
           location = p.mouse.get_pos() # (x,y) position of the mouse
           col = location[0]//SQUARE_SIZE
           row = location[1]//SQUARE_SIZE
           if sqSelected == (row, col): # if the user selected same square
-            sqSelected == () # selected square becomes nothing
+            sqSelected == () # unselect
             playerClicks = [] # no player clicks
           else:
             sqSelected = (row, col)
@@ -84,6 +87,27 @@ def main():
           gameOver = False # set gameOver to false
           game_state.checkmate = False # set checkmate to false
           game_state.stalemate = False # set stalemate to false
+          '''
+          
+        # pawn promotion
+        if e.key == p.K_r: # if r is pressed
+          game_state.promotePawn('R') # promote to rook
+          moveMade = True # set moveMade to true
+          animate = False # set animate to false
+        if e.key == p.K_b: # if b is pressed
+          game_state.promotePawn('B') # promote to bishop
+          moveMade = True # set moveMade to true
+          animate = False # set animate to false
+        if e.key == p.K_n: # if n is pressed
+          game_state.promotePawn('N') # promote to knight
+          moveMade = True # set moveMade to true
+          animate = False # set animate to false
+        if e.key == p.K_q: # if q is pressed
+          game_state.promotePawn('Q') # promote to queen
+          moveMade = True # set moveMade to true
+          animate = False # set animate to false
+        '''
+
 
     if moveMade: # if a move is made, update valid moves
       if animate: 

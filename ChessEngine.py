@@ -1,6 +1,7 @@
 '''
 This class is responsible for all the information about the current state of the chess game. It will also be responsible for determining the valid moves at the current state. It will also have a move log.
 '''
+import pygame as p
 
 class GameState():
   def __init__(self):
@@ -49,8 +50,8 @@ class GameState():
 
     # pawn promotion
     if move.isPawnPromotion:
-      self.board[move.endRow][move.endCol] = move.pieceMoved[0] + 'Q' # promote to queen
-
+      self.promotePawn(move)
+      
     # enpassant move
     if move.isEnpassantMove:
       self.board[move.startRow][move.endCol] = '--' # capturing the pawn
@@ -74,7 +75,12 @@ class GameState():
     self.updateCastleRights(move)
     self.castleRightsLog.append(CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks,
                                               self.currentCastlingRight.wqs, self.currentCastlingRight.bqs))
-    
+  '''
+  def promotePawn(self, move):
+    row, col = move.endRow, move.endCol
+    color = "w" if self.whiteToMove else "b"
+    self.board[row][col] = color + 'Q' # assume pawn promoted to queen
+  '''
 
 
   '''
