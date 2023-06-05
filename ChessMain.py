@@ -3,7 +3,7 @@ This is our main driver file, it wiill be responsible for handling user inpu and
 '''
 
 import pygame as p
-import ChessEngine
+import ChessEngine, ChickenStock
 
 WIDTH = HEIGHT = 512 # 400 also works
 DIMENSION = 8 # dimensions of a hess board are 8x8
@@ -46,7 +46,7 @@ def main():
         running = False
       # mouse handler
       elif e.type == p.MOUSEBUTTONDOWN:
-        if not gameOver and humanTurn: # if the game is not over and it is a human's turn
+        if not gameOver: # if the game is not over and it is a human's turn
           location = p.mouse.get_pos() # (x,y) position of the mouse
           col = location[0]//SQUARE_SIZE
           row = location[1]//SQUARE_SIZE
@@ -87,27 +87,14 @@ def main():
           gameOver = False # set gameOver to false
           game_state.checkmate = False # set checkmate to false
           game_state.stalemate = False # set stalemate to false
-          '''
-          
-        # pawn promotion
-        if e.key == p.K_r: # if r is pressed
-          game_state.promotePawn('R') # promote to rook
-          moveMade = True # set moveMade to true
-          animate = False # set animate to false
-        if e.key == p.K_b: # if b is pressed
-          game_state.promotePawn('B') # promote to bishop
-          moveMade = True # set moveMade to true
-          animate = False # set animate to false
-        if e.key == p.K_n: # if n is pressed
-          game_state.promotePawn('N') # promote to knight
-          moveMade = True # set moveMade to true
-          animate = False # set animate to false
-        if e.key == p.K_q: # if q is pressed
-          game_state.promotePawn('Q') # promote to queen
-          moveMade = True # set moveMade to true
-          animate = False # set animate to false
-        '''
 
+    # AI move finder logic
+    if not gameOver and not humanTurn:
+      AIMove = ChickenStock.findRandomMove(validMoves)
+      game_state.makeMove(AIMove)
+      moveMade = True
+      animate = True
+      
 
     if moveMade: # if a move is made, update valid moves
       if animate: 

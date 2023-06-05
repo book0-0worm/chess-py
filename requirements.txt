@@ -1,0 +1,4 @@
+pygame==2.4.0
+stockfish==3.28.0
+
+
