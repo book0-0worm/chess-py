@@ -46,7 +46,7 @@ def main():
         running = False
       # mouse handler
       elif e.type == p.MOUSEBUTTONDOWN:
-        if not gameOver: # if the game is not over and it is a human's turn
+        if not gameOver and humanTurn: # if the gam0e is not over and it is a human's turn
           location = p.mouse.get_pos() # (x,y) position of the mouse
           col = location[0]//SQUARE_SIZE
           row = location[1]//SQUARE_SIZE
@@ -58,9 +58,9 @@ def main():
             playerClicks.append(sqSelected) # add for both 1st and 2nd clicks
           if len(playerClicks) == 2: # after second click
             move = ChessEngine.Move(playerClicks[0], playerClicks[1], game_state.board)
-            print(move.getChessNotation())
             for i in range(len(validMoves)):
               if move == validMoves[i]:
+                ChickenStock.addMove(move.getChessNotation())
                 game_state.makeMove(validMoves[i])
                 moveMade = True
                 animate = True
@@ -90,11 +90,11 @@ def main():
 
     # AI move finder logic
     if not gameOver and not humanTurn:
-      AIMove = ChickenStock.findRandomMove(validMoves)
+      AIMove = ChickenStock.getAIMove(validMoves)
       game_state.makeMove(AIMove)
       moveMade = True
       animate = True
-      
+
 
     if moveMade: # if a move is made, update valid moves
       if animate: 
