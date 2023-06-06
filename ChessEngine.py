@@ -79,6 +79,7 @@ class GameState():
   '''
   Undo the last move made
   '''
+  
   def undoMove(self):
     if len(self.moveLog) != 0: # make sure that there is a move to undo
       move = self.moveLog.pop()
@@ -110,7 +111,7 @@ class GameState():
         else: # queenside
           self.board[move.endRow][move.endCol-2] = self.board[move.endRow][move.endCol+1] # move the rook back
           self.board[move.endRow][move.endCol+1] = '--' # leave blank space where the rook was
-
+    
 
 
   '''
@@ -168,7 +169,7 @@ class GameState():
       if self.inCheck():
         moves.remove(moves[i]) # 5.) if they do attack the king, not valid move 
       self.whiteToMove = not self.whiteToMove
-      self.undoMove()
+      self.undoMove() # undo the move
     if len(moves) == 0: # either checkmate or stalemate
       if self.inCheck(): # if in check
         self.checkmate = True # set checkmate to true
@@ -405,7 +406,7 @@ class Move():
 
   def getChessNotation(self):
     # you can add to make this like real chess notation
-    return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol)
+    return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol) + ("q" if self.isPawnPromotion else "")
 
   def getRankFile(self, r, c):
     return self.colsToFiles[c] + self.rowsToRanks[r]
