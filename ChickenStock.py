@@ -1,5 +1,8 @@
 from stockfish import Stockfish
 
+'''
+Set the parameters for the Stockfish engine.
+'''
 stockfish = Stockfish(parameters={
     "Debug Log File": "",
     "Contempt": 0,
@@ -17,6 +20,10 @@ stockfish = Stockfish(parameters={
     "UCI_Elo": 3000
 }, depth=15)
 
+'''
+Functions for the ChickenStock AI.
+'''
+
 def stockfishInit():
     stockfish.set_position()
 
@@ -30,4 +37,3 @@ def getAIMove(validMoves):
     for temp_move in validMoves:
         if temp_move.getChessNotation() == move:
             return temp_move
-

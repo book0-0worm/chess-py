@@ -1,7 +1,6 @@
 '''
 This class is responsible for all the information about the current state of the chess game. It will also be responsible for determining the valid moves at the current state. It will also have a move log.
 '''
-
 class GameState():
   def __init__(self):
     # board is a 8x8 2d list, and each lemenet of the list has 2 characters
@@ -30,7 +29,6 @@ class GameState():
     self.currentCastlingRight = CastleRights(True, True, True, True) # castling rights for the current state of the game
     self.castleRightsLog = [CastleRights(self.currentCastlingRight.wks, self.currentCastlingRight.bks, 
                                          self.currentCastlingRight.wqs, self.currentCastlingRight.bqs)] # log of castling rights so we can undo
-
 
 
   '''
@@ -79,7 +77,6 @@ class GameState():
   '''
   Undo the last move made
   '''
-  
   def undoMove(self):
     if len(self.moveLog) != 0: # make sure that there is a move to undo
       move = self.moveLog.pop()
@@ -112,7 +109,6 @@ class GameState():
           self.board[move.endRow][move.endCol-2] = self.board[move.endRow][move.endCol+1] # move the rook back
           self.board[move.endRow][move.endCol+1] = '--' # leave blank space where the rook was
     
-
 
   '''
   Update the castle rights given the move
@@ -360,7 +356,7 @@ class GameState():
 
 
 
-class CastleRights():
+class CastleRights(): # keeps track of castling rights
   def __init__(self, wks, bks, wqs, bqs):
     self.wks = wks
     self.bks = bks
@@ -368,7 +364,7 @@ class CastleRights():
     self.bqs = bqs
 
 
-class Move():
+class Move(): # stores information about a move
   # maps keys to values
   # key : value
   ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4,

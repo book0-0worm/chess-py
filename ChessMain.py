@@ -12,6 +12,8 @@ red = chalk.Chalk('red')
 green = chalk.Chalk('green')
 yellow = chalk.Chalk('yellow')
 blue = chalk.Chalk('blue')
+cyan = chalk.Chalk('cyan')
+magenta = chalk.Chalk('magenta')
 
 
 def clear():
@@ -60,7 +62,7 @@ def main():
   while running:
     humanTurn = (game_state.whiteToMove and playerOne) or (not game_state.whiteToMove and playerTwo) # check if it is a human's turn
     for e in p.event.get():
-      if e.type == p.QUIT:
+      if e.type == p.QUIT: # quit the game when the user presses the x button
         running = False
       # mouse handler
       elif e.type == p.MOUSEBUTTONDOWN:
@@ -93,6 +95,9 @@ def main():
           running = False
           ChickenStock.stockfishInit()
           main()
+        if e.key == p.K_q: # quit the game when q is pressed
+          running = False
+
 
     # AI move finder logic
     if not gameOver and not humanTurn:
@@ -209,14 +214,14 @@ def drawText(screen, text): # draw text on the screen
 if __name__ == "__main__":
   clear()
   print(chalk.bold('''
-Welcome to ''') + blue("Chess", bold=True) + chalk.bold('''! You will be set up against ChickenStock, our unbeatable chess AI. Good luck!
+Welcome to ''') + blue("Chess", bold=True, underline=True) + chalk.bold('''! You will be set up against ChickenStock, our unbeatable chess AI. Good luck!
 To play, click on the piece you want to move, then click on the square you want to move it to.
-If you want to restart, press 'r'.'''))
+If you want to restart, press 'r'. If you wish to quit, press 'q'.\n '''))
   eloChoosing = True
   while eloChoosing:
 
     print(chalk.bold(chalk.underline("Select the difficulty (ELO) you want to play at: ")))
-    print(chalk.bold("[1] ") + blue("500", bold=True))
+    print(chalk.bold("[1] ") + cyan("500", bold=True))
     print(chalk.bold("[2] ") + green("700", bold=True))
     print(chalk.bold("[3] ") + yellow("1000", bold=True))
     print(chalk.bold("[4] ") + red("Unbeatable", bold=True))
