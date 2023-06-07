@@ -4,6 +4,24 @@ This is our main driver file, it wiill be responsible for handling user inpu and
 
 import pygame as p
 import ChessEngine, ChickenStock
+import os
+import time
+import chalk
+
+red = chalk.Chalk('red')
+green = chalk.Chalk('green')
+yellow = chalk.Chalk('yellow')
+blue = chalk.Chalk('blue')
+
+
+def clear():
+    # checks for os and sends appropriate clear command
+    if os.name == 'posix':
+        os.system("clear")
+    else:
+        os.system("cls")
+
+
 
 WIDTH = HEIGHT = 512 # 400 also works
 DIMENSION = 8 # dimensions of a hess board are 8x8
@@ -21,7 +39,7 @@ def loadImages():
 # Note: we can access an image by saying "IMAGES['wp']" 
 
 '''
-The main dirver for our code. This will hander user input andd updating graphics
+The main driver for our code. This will hander user input and updating graphics
 '''
 def main():
   p.init()
@@ -40,13 +58,13 @@ def main():
   playerOne = True # if a human is playing white, then this will be True, else False
   playerTwo = False # if a human is playing black, then this will be True, else False
   while running:
-    humanTurn = (game_state.whiteToMove and playerOne) or (not game_state.whiteToMove and playerTwo)
+    humanTurn = (game_state.whiteToMove and playerOne) or (not game_state.whiteToMove and playerTwo) # check if it is a human's turn
     for e in p.event.get():
       if e.type == p.QUIT:
         running = False
       # mouse handler
       elif e.type == p.MOUSEBUTTONDOWN:
-        if not gameOver and humanTurn: # if the gam0e is not over and it is a human's turn
+        if not gameOver and humanTurn: # if the game is not over and it is a human's turn
           location = p.mouse.get_pos() # (x,y) position of the mouse
           col = location[0]//SQUARE_SIZE
           row = location[1]//SQUARE_SIZE
@@ -71,7 +89,7 @@ def main():
       # key handlers
       
       elif e.type == p.KEYDOWN:
-        if e.key == p.K_c: # reset the game when c is pressed
+        if e.key == p.K_r: # reset the game when r is pressed
           running = False
           ChickenStock.stockfishInit()
           main()
@@ -189,7 +207,42 @@ def drawText(screen, text): # draw text on the screen
   screen.blit(textObject, textLocation.move(2,2)) # draw text slightly offset for outline look
 
 if __name__ == "__main__":
-  main()
+  clear()
+  print(chalk.bold('''
+Welcome to ''') + blue("Chess", bold=True) + chalk.bold('''! You will be set up against ChickenStock, our unbeatable chess AI. Good luck!
+To play, click on the piece you want to move, then click on the square you want to move it to.
+If you want to restart, press 'r'.'''))
+  eloChoosing = True
+  while eloChoosing:
+
+    print(chalk.bold(chalk.underline("Select the difficulty (ELO) you want to play at: ")))
+    print(chalk.bold("[1] ") + blue("500", bold=True))
+    print(chalk.bold("[2] ") + green("700", bold=True))
+    print(chalk.bold("[3] ") + yellow("1000", bold=True))
+    print(chalk.bold("[4] ") + red("Unbeatable", bold=True))
+
+    choice = input("Enter your choice: ")
+    if choice == "1":
+      ChickenStock.stockfish.update_engine_parameters({"UCI_LimitStrength": "true", "UCI_Elo": 500})
+      eloChoosing = False
+      main()
+    elif choice == "2":
+      ChickenStock.stockfish.update_engine_parameters({"UCI_LimitStrength": "true", "UCI_Elo": 700})
+      eloChoosing = False
+      main()
+    elif choice == "3":
+      ChickenStock.stockfish.update_engine_parameters({"UCI_LimitStrength": "true", "UCI_Elo": 1000})
+      eloChoosing = False
+      main()
+    elif choice == "4":
+      ChickenStock.stockfish.update_engine_parameters({"UCI_LimitStrength": "false", "UCI_Elo": 3000})
+      eloChoosing = False
+      main()
+    else:
+      print("Invalid input. Please try again.")
+      time.sleep(1)
+      clear()
+
 
 
 

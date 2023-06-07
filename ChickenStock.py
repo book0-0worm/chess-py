@@ -1,4 +1,5 @@
 from stockfish import Stockfish
+
 stockfish = Stockfish(parameters={
     "Debug Log File": "",
     "Contempt": 0,
@@ -29,5 +30,4 @@ def getAIMove(validMoves):
     for temp_move in validMoves:
         if temp_move.getChessNotation() == move:
             return temp_move
-        
 
